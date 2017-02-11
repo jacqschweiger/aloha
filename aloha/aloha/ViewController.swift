@@ -19,6 +19,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     
     var messages: [Message] = []
+    var messages2: [Message2] = []
     var locationManager = CLLocationManager()
 
     
@@ -36,10 +37,10 @@ class ViewController: UIViewController {
     func loadAllMessages() {
         messages = []
         guard let savedItems = UserDefaults.standard.array(forKey: PreferencesKeys.savedItems) else { return }
-        for savedItem in savedItems {
-            guard let message = NSKeyedUnarchiver.unarchiveObject(with: savedItem as! Data) as? Message else { continue }
-            add(message: message)
-        }
+//        for savedItem in savedItems {
+//            guard let message = NSKeyedUnarchiver.unarchiveObject(with: savedItem as! Data) as? Message else { continue }
+//            add(message: message)
+//        }
     }
     
     func saveAllMessages() {
@@ -56,8 +57,7 @@ class ViewController: UIViewController {
     // MARK: Functions that update the model/associated views with messages changes
     func add(message: Message) {
         messages.append(message)
-        mapView.addAnnotation(message as MKAnnotation)
-        addRadiusOverlay(forMessage: message)
+        mapView.addAnnotation(message as! MKAnnotation)
         updateMessagesCount()
     }
     
@@ -140,18 +140,18 @@ extension ViewController {
         //TODO: put API call here
         
         AlohaAPIClient.getAPIData { (results) in
-            print("Api called")
+            //print(results)
             for result in results {
-                let newMessage = Message2(x: result, y: result, message: result)
+                let newMessage = Message2(dictionary: result)
+                self.messages2.append(newMessage)
             }
         }
-        
-        let message = Message(coordinate: CLLocationCoordinate2D(latitude: 40.7829, longitude: -73.9654), radius: 1, identifier: "test", note: "I love Hackentine's Day!", eventType: .onEntry)
-        
-        add(message: message)
-        startMonitoring(message: message)
-        
-        print("messages = \(messages[0].note)")
+    
+//        let message = Message(coordinate: CLLocationCoordinate2D(latitude: 40.7829, longitude: -73.9654), radius: 1, identifier: "test", note: "I love Hackentine's Day!", eventType: .onEntry)
+//
+//        add(message: message)
+//        startMonitoring(message: message)
+    
     }
     
 }

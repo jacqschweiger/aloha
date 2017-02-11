@@ -82,8 +82,10 @@ class Message2 {
     var message: String
     
     init(dictionary: [String: String]){
-        self.x = dictionary["x"]
-        self.y = dictionary["y"]
-        self.message = dictionary["message"]
+        
+        self.x = dictionary["x"] ?? "40"
+        self.y = dictionary["y"] ?? "-73"
+        self.message = dictionary["message"] ?? "I love Hackentine's Day!"
+        
     }
 }

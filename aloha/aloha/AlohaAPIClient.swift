@@ -22,8 +22,6 @@ class AlohaAPIClient {
     
     class func getAPIData(with completion: @escaping ([[String:String]])-> Void) {
         
-        //let urlString: String = "https://requestb.in/1hl4rhx1?x=\(Constants.xcoordinate)&y=\(Constants.ycoordinate)&radius=\(Constants.radius)"
-        
         let urlString: String = "https://alohagdi.herokuapp.com/"
         
         let url = URL(string: urlString)
