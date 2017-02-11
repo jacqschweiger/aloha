@@ -139,6 +139,13 @@ extension ViewController {
         
         //TODO: put API call here
         
+        AlohaAPIClient.getAPIData { (results) in
+            print("Api called")
+            for result in results {
+                let newMessage = Message2(x: result, y: result, message: result)
+            }
+        }
+        
         let message = Message(coordinate: CLLocationCoordinate2D(latitude: 40.7829, longitude: -73.9654), radius: 1, identifier: "test", note: "I love Hackentine's Day!", eventType: .onEntry)
         
         add(message: message)

@@ -33,7 +33,7 @@ class Message: NSObject, NSCoding, MKAnnotation {
     var identifier: String
     var note: String
     var eventType: EventType
-    
+
     var title: String? {
         if note.isEmpty {
             return "No Note"
@@ -74,4 +74,16 @@ class Message: NSObject, NSCoding, MKAnnotation {
         coder.encode(eventType.rawValue, forKey: GeoKey.eventType)
     }
     
+}
+
+class Message2 {
+    var x: String
+    var y: String
+    var message: String
+    
+    init(dictionary: [String: String]){
+        self.x = dictionary["x"]
+        self.y = dictionary["y"]
+        self.message = dictionary["message"]
+    }
 }
