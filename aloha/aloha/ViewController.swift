@@ -27,22 +27,31 @@ class ViewController: UIViewController {
         
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
+        addMessage()
         loadAllMessages()
     }
+
     
     // MARK: Loading and saving functions
     func loadAllMessages() {
         messages = []
-        
-        AlohaAPIClient.getAPIData { (response) in
-            print("called api")
-            //apend 
+        guard let savedItems = UserDefaults.standard.array(forKey: PreferencesKeys.savedItems) else { return }
+        for savedItem in savedItems {
+            guard let message = NSKeyedUnarchiver.unarchiveObject(with: savedItem as! Data) as? Message else { continue }
+            add(message: message)
         }
-        
-        let testMessage = Message(coordinate: CLLocationCoordinate2D(latitude: 40, longitude: -73), radius: 100000000, identifier: "test", note: "I love Hackentine's Day!", eventType: .onEntry)
-    
-        messages.append(testMessage)
     }
+    
+    func saveAllMessages() {
+        var items: [Data] = []
+        for message in messages {
+            let item = NSKeyedArchiver.archivedData(withRootObject: message)
+            items.append(item)
+        }
+        UserDefaults.standard.set(items, forKey: PreferencesKeys.savedItems)
+    }
+
+    
     
     // MARK: Functions that update the model/associated views with messages changes
     func add(message: Message) {
@@ -127,10 +136,8 @@ class ViewController: UIViewController {
 extension ViewController {
     
     func addMessage(){
-
-        let clampedRadius = min(100000, locationManager.maximumRegionMonitoringDistance)
         
-        let message = Message(coordinate: CLLocationCoordinate2D(latitude: 40, longitude: -73), radius: clampedRadius, identifier: "test", note: "I love Hackentine's Day!", eventType: .onEntry)
+        let message = Message(coordinate: CLLocationCoordinate2D(latitude: 40.7829, longitude: -73.9654), radius: 1, identifier: "test", note: "I love Hackentine's Day!", eventType: .onEntry)
         
         add(message: message)
         startMonitoring(message: message)
@@ -215,7 +222,7 @@ extension UIViewController {
 extension MKMapView {
     func zoomToUserLocation() {
         guard let coordinate = userLocation.location?.coordinate else { return }
-        let region = MKCoordinateRegionMakeWithDistance(coordinate, 10000, 10000)
+        let region = MKCoordinateRegionMakeWithDistance(coordinate, 100, 100)
         setRegion(region, animated: true)
     }
 }
