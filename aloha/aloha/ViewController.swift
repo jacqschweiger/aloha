@@ -38,7 +38,10 @@ class ViewController: UIViewController {
             print("called api")
             //apend 
         }
-
+        
+        let testMessage = Message(coordinate: CLLocationCoordinate2D(latitude: 40, longitude: -73), radius: 100000000, identifier: "test", note: "I love Hackentine's Day!", eventType: .onEntry)
+    
+        messages.append(testMessage)
     }
     
     // MARK: Functions that update the model/associated views with messages changes
@@ -65,6 +68,7 @@ class ViewController: UIViewController {
     
     // MARK: Map overlay functions
     func addRadiusOverlay(forMessage message: Message) {
+        print("add radius overlay called")
         mapView.add(MKCircle(center: message.coordinate, radius: message.radius))
     }
     
@@ -119,6 +123,24 @@ class ViewController: UIViewController {
     }
 }
 
+// MARK: AddGeotificationViewControllerDelegate
+extension ViewController {
+    
+    func addMessage(){
+
+        let clampedRadius = min(100000, locationManager.maximumRegionMonitoringDistance)
+        
+        let message = Message(coordinate: CLLocationCoordinate2D(latitude: 40, longitude: -73), radius: clampedRadius, identifier: "test", note: "I love Hackentine's Day!", eventType: .onEntry)
+        
+        add(message: message)
+        startMonitoring(message: message)
+        
+        print("messages = \(messages[0].note)")
+    }
+    
+}
+
+
 
 // MARK: - Location Manager Delegate
 extension ViewController: CLLocationManagerDelegate {
@@ -141,7 +163,7 @@ extension ViewController: CLLocationManagerDelegate {
 extension ViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let identifier = "myGeotification"
+        let identifier = "myMessage"
         if annotation is Message {
             var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
             if annotationView == nil {
