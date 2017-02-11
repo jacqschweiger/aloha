@@ -27,8 +27,8 @@ class ViewController: UIViewController {
         
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
-        addMessage()
-        loadAllMessages()
+        loadMessages()
+        //loadAllMessages()
     }
 
     
@@ -95,9 +95,9 @@ class ViewController: UIViewController {
     }
     
     // MARK: Other mapview functions
-    func zoomToCurrentLocation(sender: AnyObject) {
-        mapView.zoomToUserLocation()
-    }
+//    func zoomToCurrentLocation(sender: AnyObject) {
+//        mapView.zoomToUserLocation()
+//    }
     
     func region(withMessage message: Message) -> CLCircularRegion {
 
@@ -132,10 +132,12 @@ class ViewController: UIViewController {
     }
 }
 
-// MARK: AddGeotificationViewControllerDelegate
+// MARK: API Call
 extension ViewController {
     
-    func addMessage(){
+    func loadMessages(){
+        
+        //TODO: put API call here
         
         let message = Message(coordinate: CLLocationCoordinate2D(latitude: 40.7829, longitude: -73.9654), radius: 1, identifier: "test", note: "I love Hackentine's Day!", eventType: .onEntry)
         
@@ -219,11 +221,11 @@ extension UIViewController {
     }
 }
 
-extension MKMapView {
-    func zoomToUserLocation() {
-        guard let coordinate = userLocation.location?.coordinate else { return }
-        let region = MKCoordinateRegionMakeWithDistance(coordinate, 100, 100)
-        setRegion(region, animated: true)
-    }
-}
+//extension MKMapView {
+//    func zoomToUserLocation() {
+//        guard let coordinate = userLocation.location?.coordinate else { return }
+//        let region = MKCoordinateRegionMakeWithDistance(coordinate, 100, 100)
+//        setRegion(region, animated: true)
+//    }
+//}
 
